@@ -31,3 +31,6 @@ void closeSensor() | disable glass sensor
 void saveSettings() | save current config to glass
 void getFirmwareVersion() | get glass firmware version
 void setLuminanceMode(byte luminanceMode) | set the glass display luminance 1 - lum120, 2 - lum300, 0 - lum500, 3 - lum1500, 4 - lum3000
+void startTracking() | start hmd Tracking
+void stopTracking() | stop hmd Tracking
+void getEulerAnglesInDegree(float[] eulerAngles) | get euler angles in degrees with the order of pitch, yaw, roll
