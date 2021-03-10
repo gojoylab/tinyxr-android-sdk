@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                         ((TextView)(findViewById(R.id.acc_data))).setText(data[0]);
                         ((TextView)(findViewById(R.id.gyro_data))).setText(data[1]);
                         ((TextView)(findViewById(R.id.mag_data))).setText(data[2]);
-                        ((TextView)(findViewById(R.id.euler_data))).setText(data[3]);
+                        ((TextView)(findViewById(R.id.quaternion_data))).setText(data[3]);
                         break;
 
                     case MSG_VERSION_AVAILABLE:
@@ -95,16 +95,12 @@ public class MainActivity extends AppCompatActivity {
         mGlassDevice.registerGlassboardListener(new GlassboardEventListener() {
             @SuppressLint({"SetTextI18n", "DefaultLocale"})
             @Override
-            public void onSensorChanged(float[] accSensorData, float[] gyroSensorData, float[] magSensorData, long time) {
+            public void onSensorChanged(float[] accSensorData, float[] gyroSensorData, float[] magSensorData, float[] quaternion, long time) {
                 String[] msgData = new String[5];
                 msgData[0] = String.format("%.2f", accSensorData[0]) + ", " + String.format("%.2f", accSensorData[1]) + ", " + String.format("%.2f", accSensorData[2]);
                 msgData[1] = String.format("%.2f", gyroSensorData[0]) + ", " + String.format("%.2f", gyroSensorData[1]) + ", " + String.format("%.2f", gyroSensorData[2]);
                 msgData[2] = String.format("%.2f", magSensorData[0]) + ", " + String.format("%.2f", magSensorData[1]) + ", " + String.format("%.2f", magSensorData[2]);
-
-                float[] eulerAngles = new float[3];
-                // get HMD Euler in Degree with order of pitch, yaw, roll
-                mGlassDevice.getEulerAnglesInDegree(eulerAngles);
-                msgData[3] = String.format("%.2f", eulerAngles[0]) + ", " + String.format("%.2f", eulerAngles[1]) + ", " + String.format("%.2f", eulerAngles[2]);
+                msgData[3] = String.format("%.2f", quaternion[0]) + ", " + String.format("%.2f", quaternion[1]) + ", " + String.format("%.2f", quaternion[2]) + ", " + String.format("%.2f", quaternion[3]);
 
                 Message msg = new Message();
                 msg.obj = msgData;
@@ -121,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     case Glassboard.COMMAND_DEVICE_INFO:
                         msgData[0] = extra;
                         msg.what = MSG_VERSION_AVAILABLE;
-                        mGlassDevice.startTracking();
+                        mGlassDevice.openSensor();
                         break;
 
                     case Glassboard.COMMAND_SENSOR_DATA_ON:
@@ -213,13 +209,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void onGetVersionClick(View view) {
         mGlassDevice.getFirmwareVersion();
-    }
-
-    public void onEnableHeadTrackingClick(View view) {
-        mGlassDevice.startTracking();
-    }
-
-    public void onDisableHeadTrackingClick(View view) {
-        mGlassDevice.stopTracking();
     }
 }
