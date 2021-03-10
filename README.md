@@ -34,3 +34,6 @@ void setLuminanceMode(byte luminanceMode) | set the glass display luminance 1 - 
 void startTracking() | start hmd Tracking
 void stopTracking() | stop hmd Tracking
 void getEulerAnglesInDegree(float[] eulerAngles) | get euler angles in degrees with the order of pitch, yaw, roll
+
+## Firmware
+To make SDK work well, please update lastest firmware to GP01 board: https://github.com/gojoylab/tinyxr-firmware-download
